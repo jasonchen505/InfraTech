@@ -25,11 +25,13 @@
 | [kv_cache_transfer_vs_recomputation.ipynb](./llm_infer)                                                                        | 推理基础        | [KV cache用池化的数据会比重算更快吗？](https://www.zhihu.com/question/1954115162412942829/answer/1964780161137381481)             | ⚡️⚡️   |
 | [linear_attention_kv_cache_size.ipynb](./llm_infer)                                                                            | 推理基础        | [LinearAttention在KV cache的存储上有多大优势？](https://www.zhihu.com/question/1974064489159730057/answer/1974067690864928547) | ⚡️     |
 | [quantization.ipynb](./llm_infer)                                                                                              | 推理基础        | [大模型推理量化(Quantiztion)基础速览](https://zhuanlan.zhihu.com/p/2005335401469083798)                                        | ⚡️     |
+| [nano_vllm.ipynb](./llm_infer)                                                                                                 | Nano-vLLM   | [推理框架极简入门：用Nano-vLLM搭建知识体系](https://zhuanlan.zhihu.com/p/2008285806222132143)                                       | ⚡️     |
 | [vllm_basic_scheduler.ipynb](./llm_infer)                                                                                      | vLLM        | [手搓一个基础调度器](https://zhuanlan.zhihu.com/p/1988193790129902960)                                                       | ⚡️⚡️   |
 | [sglang_radix_attention.ipynb](./llm_infer)                                                                                    | SGLang      | [手撕RadixAttention](https://zhuanlan.zhihu.com/p/1994495318197305400)                                                | ⚡️⚡️   |
 | [sglang_profiling_from_scratch.ipynb](./llm_infer)                                                                             | SGLang      | [SGLang Profiling数据采集与分析入门](https://zhuanlan.zhihu.com/p/2004605638760763526)                                       | ⚡️     |
 | [vllm_mem_snapshot.ipynb](./llm_infer)                                                                                         | vLLM        | [vLLM显存可视化与管理详解](https://zhuanlan.zhihu.com/p/1916529253169734444)                                                  | ⚡️️    |
 | [switch_role_update_weights.ipynb](./llm_infer)                                                                                | SGLang/vLLM | [降低RL训推共卡开销：SGLang/vLLM的无缝切换实现与分析](https://zhuanlan.zhihu.com/p/2002748926185469778)                                | ⚡️     |
+| [cuda_graph.ipynb](./llm_infer)                                                                                                | 扩展知识        | [vLLM为什么没在prefill阶段支持cuda graph？](https://www.zhihu.com/question/7987565201/answer/2012589977544991690)             | ⚡️️    |
 | [LoRA_to_Multi_LoRA.ipynb](./multi_lora)                                                                                       | 训推基础        | [从LoRA到Multi-LoRA](https://zhuanlan.zhihu.com/p/1984729458444363168)                                                | ⚡️⚡️   |
 | [mini_dl_framework.ipynb](./deeplearning_framework)                                                                            | 训练框架        | [从零实现MLP训练全流程](https://zhuanlan.zhihu.com/p/1988895482320266895)                                                    | ⚡️⚡️   |
 | [pytorch_vista_deepseekV3.ipynb](./pytorch_vista)                                                                              | PyTorch     | [PyTorch结构可视化](https://zhuanlan.zhihu.com/p/1977414887736112704)                                                    | ⚡️     |
@@ -37,39 +39,42 @@
 
 ## 🤖 推理基础知识与框架
 
-| 📚  文章                                                                                                              | 📖 知识分类 | 📜 备注                                                       |
-|:--------------------------------------------------------------------------------------------------------------------|:--------|:------------------------------------------------------------|
-| [入门知识：大模型推理核心概念与术语总结](https://zhuanlan.zhihu.com/p/1983137653336585901)                                             | 推理基础    | 🔥🔥🔥                                                      |
-| [入门知识：大模型推理并行策略(DP/TP/PP/SP/EP)原理简介](https://zhuanlan.zhihu.com/p/2003423046342554380)                              | 推理基础    | [练习](llm_infer/parallel_strategies.ipynb)                   |
-| [入门知识：LLM推理并行优化的必备知识](https://zhuanlan.zhihu.com/p/1937449564509545940)                                             | 推理基础    | 🔥🔥🔥                                                      |
-| [入门知识：从LoRA到Multi-LoRA：原理&代码实践](https://zhuanlan.zhihu.com/p/1984729458444363168)                                   | 推理基础    | [练习](./multi_lora/LoRA_to_Multi_LoRA.ipynb)                 |
-| [入门知识：ChunkedPrefill&FlashDecoding原理详解](https://zhuanlan.zhihu.com/p/1988996116017086993)                           | 推理基础    | [练习](./llm_infer/chunked_prefill_and_flash_decoding.ipynb)  |
-| [入门知识：LLM推理采样(Sampling)常见知识概览](https://zhuanlan.zhihu.com/p/1981752176578667658)                                    | 推理基础    | 🔥                                                          |
-| [入门知识：Speculative Decoding投机推理的原理与常见方案](https://zhuanlan.zhihu.com/p/1978037808544370747)                           | 推理基础    | 🔥                                                          |
-| [入门知识：推理的非确定性运算](https://zhuanlan.zhihu.com/p/1997403964413608619)                                                  | 推理基础    | 🔥                                                          |
-| [入门知识：大模型推理量化(Quantiztion)基础速览](https://zhuanlan.zhihu.com/p/2005335401469083798)                                   | 推理基础    | [练习](llm_infer/quantization.ipynb)                          |
-| [vLLM(一)：vLLM框架快速入门引导](https://zhuanlan.zhihu.com/p/1984742841528902530)                                            | vLLM    | 🔥🔥🔥🚀                                                    |
-| [vLLM(二)：vLLM Scheduler逻辑难啃？先手搓一个基础调度器](https://zhuanlan.zhihu.com/p/1988193790129902960)                           | vLLM    | [练习](./llm_infer/vllm_basic_scheduler.ipynb)                |
-| [SGLang(一)：看不懂SGLang?先试试miniSGLang！](https://zhuanlan.zhihu.com/p/1986026310913528033)                              | SGLang  | 🔥🔥                                                        |
-| [SGLang(二)：手撕SGLang KV Cache核心逻辑：快速理解RadixAttention](https://zhuanlan.zhihu.com/p/1994495318197305400)              | SGLang  | [练习](./llm_infer/sglang_radix_attention.ipynb)              |
-| [SGLang(三)：Profiling数据采集与分析入门](https://zhuanlan.zhihu.com/p/2004605638760763526)                                    | SGLang  | [练习](llm_infer/sglang_profiling_from_scratch.ipynb)         |
-| [vLLM(三)：vLLM显存管理详解](https://zhuanlan.zhihu.com/p/1916529253169734444)                                              | vLLM    | 🔥[代码](./llm_infer/vllm_mem_snapshot.ipynb)                 |
-| [vLLM(四)：核心模块：vLLM V1 KV cache 管理机制剖析](https://zhuanlan.zhihu.com/p/1954128446398633139)                            | vLLM    | 🔥🔥                                                        |
-| [vLLM(五)：vLLM V1 Scheduler的调度逻辑&优先级分析](https://zhuanlan.zhihu.com/p/1900957007575511876)                            | vLLM    | 🔥                                                          |
-| [vLLM(六)：vLLM框架V1演进分析](https://zhuanlan.zhihu.com/p/1894423873145004335)                                            | vLLM    | 🔥🔥🔥                                                      |
-| [vLLM(七)：vLLM的prefix cache为何零开销](https://zhuanlan.zhihu.com/p/1896927732027335111)                                  | vLLM    | 🔥🔥🔥                                                      |
-| [vLLM(八)：vLLM DP特性与演进方案分析](https://zhuanlan.zhihu.com/p/1909265969823580330)                                        | vLLM    | 🔥                                                          |
-| [vLLM(九)：LLM推理数据并行负载均衡(DPLB)浅析](https://zhuanlan.zhihu.com/p/1927317160889386326)                                   | vLLM    | 🔥🔥🔥                                                      |
-| [PD分离（一）：vLLM PD分离方案浅析](https://zhuanlan.zhihu.com/p/1889243870430201414)                                           | 特性      | 🔥🔥🔥 🚀                                                   |
-| [PD分离（二）：vLLM PD分离KV cache传递机制详解与演进分析](https://zhuanlan.zhihu.com/p/1906741007606878764)                            | 特性      | 🔥🔥🔥                                                      |
-| [AF分离：Attention与FFN分离(AFD)方案解析 ](https://zhuanlan.zhihu.com/p/1952393747112367273)                                  | 特性      | 🔥🔥                                                        |
-| [关键特性EPLB：MoE并行负载均衡，EPLB的深度解析与可视化](https://zhuanlan.zhihu.com/p/29963005584)                                        | 特性      | 🔥🔥                                                        |
-| [关键特性FlashMLA：深度解析FlashMLA，一文读懂大模型加速新利器](https://zhuanlan.zhihu.com/p/27976368445)                                  | 特性      | 🔥🔥                                                        |
-| [降低RL训推共卡开销：SGLang/vLLM的无缝切换实现与分析](https://zhuanlan.zhihu.com/p/2002748926185469778)                                | 特性      | 🔥🔥                                                        |
-| [推理框架适配Kimi/QwenNext线性注意力:方案&公式&代码](https://zhuanlan.zhihu.com/p/1971883340031328850)                               | 扩展知识    | 🔥                                                          |
-| [LinearAttention在KV cache的存储上有多大优势？](https://www.zhihu.com/question/1974064489159730057/answer/1974067690864928547) | 扩展知识    | 🔥🔥                                                        |
-| [如何评价Nvidia发布的大模型推理PD分离架构Dynamo？](https://www.zhihu.com/question/15465759171/answer/129570965681)                   | 扩展知识    | 🔥🔥                                                        |
-| [KV cache用池化的数据会比重算更快吗？](https://www.zhihu.com/question/1954115162412942829/answer/1964780161137381481)             | 扩展知识    | 🔥 [练习](llm_infer/kv_cache_transfer_vs_recomputation.ipynb) |
+| 📚  文章                                                                                                              | 📖 知识分类   | 📜 备注                                                       |
+|:--------------------------------------------------------------------------------------------------------------------|:----------|:------------------------------------------------------------|
+| [入门知识：大模型推理核心概念与术语总结](https://zhuanlan.zhihu.com/p/1983137653336585901)                                             | 推理基础      | 🔥🔥🔥                                                      |
+| [入门知识：大模型推理并行策略(DP/TP/PP/SP/EP)原理简介](https://zhuanlan.zhihu.com/p/2003423046342554380)                              | 推理基础      | [练习](llm_infer/parallel_strategies.ipynb)                   |
+| [入门知识：LLM推理并行优化的必备知识](https://zhuanlan.zhihu.com/p/1937449564509545940)                                             | 推理基础      | 🔥🔥🔥                                                      |
+| [入门知识：从LoRA到Multi-LoRA：原理&代码实践](https://zhuanlan.zhihu.com/p/1984729458444363168)                                   | 推理基础      | [练习](./multi_lora/LoRA_to_Multi_LoRA.ipynb)                 |
+| [入门知识：ChunkedPrefill&FlashDecoding原理详解](https://zhuanlan.zhihu.com/p/1988996116017086993)                           | 推理基础      | [练习](./llm_infer/chunked_prefill_and_flash_decoding.ipynb)  |
+| [入门知识：LLM推理采样(Sampling)常见知识概览](https://zhuanlan.zhihu.com/p/1981752176578667658)                                    | 推理基础      | 🔥                                                          |
+| [入门知识：Speculative Decoding投机推理的原理与常见方案](https://zhuanlan.zhihu.com/p/1978037808544370747)                           | 推理基础      | 🔥                                                          |
+| [入门知识：推理的非确定性运算](https://zhuanlan.zhihu.com/p/1997403964413608619)                                                  | 推理基础      | 🔥                                                          |
+| [入门知识：大模型推理量化(Quantiztion)基础速览](https://zhuanlan.zhihu.com/p/2005335401469083798)                                   | 推理基础      | [练习](llm_infer/quantization.ipynb)                          |
+| [Nano-vLLM架构介绍](https://zhuanlan.zhihu.com/p/2010638958783131701)                                                   | Nano-vLLM | 🔥🔥                                                        |
+| [推理框架极简入门：用Nano-vLLM搭建知识体系](https://zhuanlan.zhihu.com/p/2008285806222132143)                                       | Nano-vLLM | [练习](llm_infer/nano_vllm.ipynb)                             |
+| [vLLM(一)：vLLM框架快速入门引导](https://zhuanlan.zhihu.com/p/1984742841528902530)                                            | vLLM      | 🔥🔥🔥🚀                                                    |
+| [vLLM(二)：vLLM Scheduler逻辑难啃？先手搓一个基础调度器](https://zhuanlan.zhihu.com/p/1988193790129902960)                           | vLLM      | [练习](./llm_infer/vllm_basic_scheduler.ipynb)                |
+| [SGLang(一)：看不懂SGLang?先试试miniSGLang！](https://zhuanlan.zhihu.com/p/1986026310913528033)                              | SGLang    | 🔥🔥                                                        |
+| [SGLang(二)：手撕SGLang KV Cache核心逻辑：快速理解RadixAttention](https://zhuanlan.zhihu.com/p/1994495318197305400)              | SGLang    | [练习](./llm_infer/sglang_radix_attention.ipynb)              |
+| [SGLang(三)：Profiling数据采集与分析入门](https://zhuanlan.zhihu.com/p/2004605638760763526)                                    | SGLang    | [练习](llm_infer/sglang_profiling_from_scratch.ipynb)         |
+| [vLLM(三)：vLLM显存管理详解](https://zhuanlan.zhihu.com/p/1916529253169734444)                                              | vLLM      | 🔥[代码](./llm_infer/vllm_mem_snapshot.ipynb)                 |
+| [vLLM(四)：核心模块：vLLM V1 KV cache 管理机制剖析](https://zhuanlan.zhihu.com/p/1954128446398633139)                            | vLLM      | 🔥🔥                                                        |
+| [vLLM(五)：vLLM V1 Scheduler的调度逻辑&优先级分析](https://zhuanlan.zhihu.com/p/1900957007575511876)                            | vLLM      | 🔥                                                          |
+| [vLLM(六)：vLLM框架V1演进分析](https://zhuanlan.zhihu.com/p/1894423873145004335)                                            | vLLM      | 🔥🔥🔥                                                      |
+| [vLLM(七)：vLLM的prefix cache为何零开销](https://zhuanlan.zhihu.com/p/1896927732027335111)                                  | vLLM      | 🔥🔥🔥                                                      |
+| [vLLM(八)：vLLM DP特性与演进方案分析](https://zhuanlan.zhihu.com/p/1909265969823580330)                                        | vLLM      | 🔥                                                          |
+| [vLLM(九)：LLM推理数据并行负载均衡(DPLB)浅析](https://zhuanlan.zhihu.com/p/1927317160889386326)                                   | vLLM      | 🔥🔥🔥                                                      |
+| [PD分离（一）：vLLM PD分离方案浅析](https://zhuanlan.zhihu.com/p/1889243870430201414)                                           | 特性        | 🔥🔥🔥 🚀                                                   |
+| [PD分离（二）：vLLM PD分离KV cache传递机制详解与演进分析](https://zhuanlan.zhihu.com/p/1906741007606878764)                            | 特性        | 🔥🔥🔥                                                      |
+| [AF分离：Attention与FFN分离(AFD)方案解析 ](https://zhuanlan.zhihu.com/p/1952393747112367273)                                  | 特性        | 🔥🔥                                                        |
+| [关键特性EPLB：MoE并行负载均衡，EPLB的深度解析与可视化](https://zhuanlan.zhihu.com/p/29963005584)                                        | 特性        | 🔥🔥                                                        |
+| [关键特性FlashMLA：深度解析FlashMLA，一文读懂大模型加速新利器](https://zhuanlan.zhihu.com/p/27976368445)                                  | 特性        | 🔥🔥                                                        |
+| [降低RL训推共卡开销：SGLang/vLLM的无缝切换实现与分析](https://zhuanlan.zhihu.com/p/2002748926185469778)                                | 特性        | 🔥🔥                                                        |
+| [推理框架适配Kimi/QwenNext线性注意力:方案&公式&代码](https://zhuanlan.zhihu.com/p/1971883340031328850)                               | 扩展知识      | 🔥                                                          |
+| [LinearAttention在KV cache的存储上有多大优势？](https://www.zhihu.com/question/1974064489159730057/answer/1974067690864928547) | 扩展知识      | 🔥🔥                                                        |
+| [如何评价Nvidia发布的大模型推理PD分离架构Dynamo？](https://www.zhihu.com/question/15465759171/answer/129570965681)                   | 扩展知识      | 🔥🔥                                                        |
+| [KV cache用池化的数据会比重算更快吗？](https://www.zhihu.com/question/1954115162412942829/answer/1964780161137381481)             | 扩展知识      | 🔥 [练习](llm_infer/kv_cache_transfer_vs_recomputation.ipynb) |
+| [vLLM为什么没在prefill阶段支持cuda graph？](https://www.zhihu.com/question/7987565201/answer/2012589977544991690)             | 扩展知识      | 🔥  [代码](llm_infer/cuda_graph.ipynb)                        |
 
 ## 🚀 推理提速经验分享
 

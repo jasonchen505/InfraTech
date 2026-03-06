@@ -12,8 +12,10 @@
 | kv_cache_transfer_vs_recomputation.ipynb    | 推理基础        | [KV cache用池化的数据会比重算更快吗？](https://www.zhihu.com/question/1954115162412942829/answer/1964780161137381481)             | ⚡️⚡️ |
 | linear_attention_kv_cache_size.ipynb        | 推理基础        | [LinearAttention在KV cache的存储上有多大优势？](https://www.zhihu.com/question/1974064489159730057/answer/1974067690864928547) | ⚡️   |
 | quantization.ipynb                          | 推理基础        | [大模型推理量化(Quantiztion)基础速览](https://zhuanlan.zhihu.com/p/2005335401469083798)                                        | ⚡️   |
+| nano_vllm.ipynb                             | Nano-vLLM   | [推理框架极简入门：用Nano-vLLM搭建知识体系](https://zhuanlan.zhihu.com/p/2008285806222132143)                                       | ⚡️   |
 | vllm_basic_scheduler.ipynb                  | vLLM        | [vLLM Scheduler逻辑难啃？先手搓一个基础调度器](https://zhuanlan.zhihu.com/p/1988193790129902960)                                   | ⚡️⚡️ |
 | vllm_mem_snapshot.ipynb                     | vLLM        | [vLLM显存可视化与管理详解](https://zhuanlan.zhihu.com/p/1916529253169734444)                                                  | ⚡️️  |
 | sglang_radix_attention.ipynb                | SGLang      | [手撕SGLang KV Cache核心逻辑：快速理解RadixAttention](https://zhuanlan.zhihu.com/p/1994495318197305400)                        | ⚡️⚡️ |
 | sglang_profiling_from_scratch.ipynb         | SGLang      | [SGLang Profiling数据采集与分析入门](https://zhuanlan.zhihu.com/p/2004605638760763526)                                       | ⚡️   |
 | switch_role_update_weights.ipynb            | SGLang/vLLM | [降低RL训推共卡开销：SGLang/vLLM的无缝切换实现与分析](https://zhuanlan.zhihu.com/p/2002748926185469778)                                | ⚡️   |
+| cuda_graph.ipynb                            | 扩展知识        | [vLLM为什么没在prefill阶段支持cuda graph？](https://www.zhihu.com/question/7987565201/answer/2012589977544991690)             | ⚡️️  |
