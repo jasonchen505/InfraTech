@@ -485,7 +485,46 @@ W = W_0 + ΔW = W_0 + B * A
 - 激活参数更少（更稀疏）
 - 词表更大（160K vs 129K）
 
-### 3.3 Qwen3.5
+### 3.3 Kimi K3（2026年7月新增）
+
+**架构特点**：
+- **KDA（Kimi Delta Attention）**：混合线性注意力，用于更长序列上高效扩展注意力计算
+- **Gated MLA**：与 KDA 并存，提升注意力选择性
+- **AttnRes（Attention Residuals）**：在深度方向上选择性检索历史层表示，而非均匀累加残差
+- **Stable LatentMoE**：896 个专家中激活 16 个，路由引入 Quantile Balancing
+
+**关键参数**：
+- 总参数 2.8T（约3T级）
+- 896 专家，每 token 激活 16 个
+- 上下文长度 1M tokens
+- 原生多模态（图像/视频）
+- 训练量化：MXFP4 weights + MXFP8 activations
+
+**关键创新**：
+1. **KDA**：混合线性注意力，将同步向 vLLM 贡献适配 KDA 的 prefix/prefill cache 实现
+2. **AttnRes**：跨层残差连接（Block n−1/n−2/n−3），选择性检索历史层表示
+3. **Quantile Balancing**：由 router score 分位数直接推导专家分配，替代传统辅助损失
+4. **SiTU 激活函数**：Sigmoid Tanh Unit
+5. **Per-Head Muon**：训练侧优化器
+
+**与 Kimi K2 对比**：
+- 参数规模：2.8T vs 1T
+- 专家数量：896 vs 384
+- 每 token 激活专家：16 vs 8
+- 上下文长度：1M vs 128K
+- 注意力机制：KDA + Gated MLA vs MLA
+- 跨层连接：AttnRes vs 标准残差
+
+**面试问题**：
+- KDA 与标准注意力的区别是什么？
+- AttnRes 解决了什么问题？
+- Quantile Balancing 相比 Auxiliary Loss 的优势？
+
+**部署要求**：
+- 官方建议在 ≥64 加速器的 supernode 配置上部署
+- 权重与技术报告计划于 2026-07-27 发布
+
+### 3.4 Qwen3.5
 
 **架构特点**：
 - 混合注意力：Gated DeltaNet + Gated Attention
@@ -501,7 +540,7 @@ W = W_0 + ΔW = W_0 + B * A
 - DeltaNet 和 Attention 各自的优势是什么？
 - 为什么要混合使用？
 
-### 3.4 DeepSeek V4
+### 3.5 DeepSeek V4
 
 **架构特点**：
 - Hybrid Attention：CSA + HCA
@@ -798,6 +837,6 @@ A：
 
 ---
 
-*本文档基于 InfraTech 项目整理，最后更新：2026年6月*
+*本文档基于 InfraTech 项目整理，最后更新：2026年7月（新增 Kimi K3 模型）*
 
 *作者学习笔记，仅供参考*

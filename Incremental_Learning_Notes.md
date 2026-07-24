@@ -223,6 +223,118 @@ k = [k_main, k_rope]  # 从潜空间恢复 + RoPE 分量
 2. **动态调整**：偏置会根据实际负载动态调整
 3. **训练稳定性**：比 Auxiliary Loss 更稳定
 
+### 3.4 Kimi K3 的新架构特性（2026年7月更新）
+
+**前两轮认知**：Kimi K2 使用 MLA + MoE，1T 参数，384 专家激活 8 个
+
+**本轮新发现**：
+
+#### 3.4.1 Kimi Delta Attention (KDA)
+
+```python
+# KDA 是一种混合线性注意力机制
+# 相比标准注意力：
+# - 计算复杂度：O(N) vs O(N^2)
+# - 显存占用：更低
+# - 长序列扩展性：更好
+
+# KDA 与 Gated MLA 并存于架构中
+# 用于在更长序列（1M tokens）上高效扩展注意力计算
+
+# 官方将向 vLLM 贡献适配 KDA 的 prefix/prefill cache 实现
+```
+
+**新学到的点**：
+1. **混合注意力**：KDA + Gated MLA，不同类型注意力并存
+2. **线性注意力优势**：在超长序列（1M）上效率更高
+3. **框架适配**：需要推理框架层面的支持
+
+#### 3.4.2 Attention Residuals (AttnRes)
+
+```python
+# 传统 Transformer 的残差连接：
+# output = x + Attention(x) + FFN(x)
+# 每层独立累加残差
+
+# AttnRes 的跨层残差连接：
+# output = x + Attention(x) + FFN(x) + f(Block_n-1, Block_n-2, Block_n-3)
+# 选择性检索历史层表示，而非均匀累加
+
+# 优势：
+# - 更好地保留深层信息
+# - 减少梯度消失
+# - 提升长序列建模能力
+```
+
+**新学到的点**：
+1. **跨层连接**：突破传统逐层残差的限制
+2. **选择性检索**：不是所有历史层都同等重要
+3. **深度方向优化**：与注意力机制的序列方向优化互补
+
+#### 3.4.3 Stable LatentMoE
+
+```python
+# 传统 MoE：
+# - 专家数量：256-384
+# - 每 token 激活：8 个
+
+# Kimi K3 的 Stable LatentMoE：
+# - 专家数量：896
+# - 每 token 激活：16 个
+# - 稀疏度更高：16/896 ≈ 1.8%（vs 8/256 = 3.1%）
+
+# 路由机制：Quantile Balancing
+# - 由 router score 分位数直接推导专家分配
+# - 不需要辅助损失
+# - 比 DeepSeek V3 的动态偏置更直接
+```
+
+**新学到的点**：
+1. **更稀疏的 MoE**：896 选 16，稀疏度更高
+2. **Quantile Balancing**：新的负载均衡方法
+3. **稳定性设计**：名称中的 "Stable" 暗示训练稳定性优化
+
+#### 3.4.4 训练量化（QAT）
+
+```python
+# Kimi K3 使用训练量化：
+# - 权重：MXFP4（4-bit Microscaling FP）
+# - 激活：MXFP8（8-bit Microscaling FP）
+# - 从 SFT 阶段开始 QAT（量化感知训练）
+
+# MXFP 格式的优势：
+# - 更高的数值精度（相比标准 INT4/INT8）
+# - 更好的硬件支持（H100/H200 Tensor Core）
+# - 训练和推理使用相同格式，减少精度损失
+```
+
+**新学到的点**：
+1. **MXFP 格式**：新的量化格式，比传统 INT 更精确
+2. **全程 QAT**：从 SFT 开始就进行量化训练
+3. **训练推理一致性**：避免训练和推理的精度差异
+
+#### 3.4.5 其他新特性
+
+```python
+# SiTU 激活函数
+# - Sigmoid Tanh Unit
+# - 替代传统的 GELU/SiLU
+# - 可能有更好的数值特性
+
+# Per-Head Muon 优化器
+# - 每个注意力头独立的 Muon 优化器
+# - 可能提升训练稳定性
+
+# 原生多模态
+# - 统一理解文本、图像、视频
+# - 视觉编码器细节待技术报告
+```
+
+**新学到的点**：
+1. **新型激活函数**：SiTU 的设计动机和优势
+2. **优化器创新**：Per-Head Muon 的理论基础
+3. **多模态融合**：原生 vs 后融合的架构选择
+
 ---
 
 ## 四、分布式训练：从理论到实践
@@ -834,6 +946,9 @@ ncu --set full python train.py
 | MLA 减少 KV Cache | 需要处理 MHA/MQA 模式切换 |
 | LoRA 参数高效 | 需要选择合适的秩 |
 | RL 训练需要训推一致性 | 需要 R3 等机制保证 |
+| MoE 负载均衡有多种方法 | Quantile Balancing 是新方向 |
+| 混合注意力提升效率 | KDA + Gated MLA 并存需要框架支持 |
+| 跨层残差连接 | AttnRes 选择性检索历史层表示 |
 
 ### 10.2 工程实践的关键点
 
@@ -841,6 +956,8 @@ ncu --set full python train.py
 2. **通信优化**：PCIe vs NVLink、梯度累积、通信压缩
 3. **性能优化**：Flash Attention、CUDA Graph、量化
 4. **稳定性保障**：监控、告警、灰度发布、回滚
+5. **模型架构演进**：KDA、AttnRes、Stable LatentMoE 等新架构
+6. **训练量化**：MXFP4/MXFP8、QAT 全程量化
 
 ### 10.3 面试准备的增量点
 
@@ -850,15 +967,20 @@ ncu --set full python train.py
 3. "训推共卡的显存怎么管理？"
 4. "量化有哪些方法？各自有什么 trade-off？"
 5. "怎么排查推理服务的性能问题？"
+6. "Kimi K3 的 KDA 和标准注意力有什么区别？"
+7. "AttnRes 解决了什么问题？"
+8. "Quantile Balancing 相比 Auxiliary Loss 的优势？"
+9. "MXFP4/MXFP8 量化格式和传统 INT 量化有什么区别？"
 
 **可以展示的实践经验**：
 1. "我在 4090 上复现了 vLLM 的调度器"
 2. "我理解 MLA 的吸收矩阵和模式切换"
 3. "我实现了简单的 LoRA 微调"
 4. "我搭建了简易的推理服务"
+5. "我跟踪了 Kimi K3 的架构演进，理解 KDA、AttnRes 等新特性"
 
 ---
 
-*本笔记基于 InfraTech 项目复现过程整理，最后更新：2026年6月*
+*本笔记基于 InfraTech 项目复现过程整理，最后更新：2026年7月（新增 Kimi K3 架构分析）*
 
 *持续更新中，记录从理论到实践的新发现*
