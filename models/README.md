@@ -9,6 +9,7 @@
 | [DeepSeek V3.2](./deepseek_v3_2) | MLA+DSA | 685B级 | 128K | 2025年12月 |
 | [DeepSeek V4](./deepseek_v4) | Hybrid Attention(CSA+HCA)+MoE+mHC | 1.6T/49B（Pro）；284B/13B（Flash） | 1M | 2026年4月 |
 | [Kimi K2.5](./kimi_k_2_5) | MLA+MoE+MoonViT | 1T/32B | 256K | 2026年1月 |
+| [Kimi K3](./kimi_k_3) | KDA+Gated MLA+AttnRes+Stable LatentMoE | 2.8T/（激活量待公布） | 1M | 2026年7月（权重计划 7/27 发布） |
 | [GLM 5](./glm_5) | MLA(DSA)+MoE | 744B/40B | 200K | 2026年2月 |
 | [MiniMax M2.5](./minimax_m_2_5) | GQA+MoE | 229B/10B | 200K | 2026年2月 |
 | [Qwen3.5](./qwen3_5) | Gated DeltaNet+Gated Attention+MoE | 397B/17B（MoE版） | 262K | 2026年2月 |
@@ -45,6 +46,12 @@
 
 <p style="text-align: center;">
   <img src="kimi_k_2_5/kimi_k_2_5_architecture.jpg" alt="Kimi K2.5架构图" />
+</p>
+
+- [Kimi K3模型卡片](./kimi_k_3)（开源权重与技术报告尚未发布）
+
+<p style="text-align: center;">
+  <img src="kimi_k_3/kimi_k_3_architecture.jpg" alt="Kimi K3架构图" />
 </p>
 
 - [GLM 5模型卡片](./glm_5)
